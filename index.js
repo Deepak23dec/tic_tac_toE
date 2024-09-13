@@ -1,5 +1,9 @@
 let boxs = document.querySelectorAll(".box");
 let currentp = true;
+let wmsg = document.querySelector(".wmsg");
+let resetbtn=document.querySelector(".reset");
+
+
 
 boxs.forEach((boxs) => {
   boxs.addEventListener("click", function () {
@@ -10,7 +14,7 @@ boxs.forEach((boxs) => {
     } else {
       boxs.innerHTML = "O";
       boxs.style.color = "red";
-      document.getElementById("win").innerHTML = "chance of Player X";
+      document.getElementById("win").innerHTML = "Chance of Player X";
       currentp = true;
     }
     boxs.disabled = true;
@@ -18,6 +22,29 @@ boxs.forEach((boxs) => {
   });
 });
 
+const enabledbtn = () => {
+  for (let box of boxs) {
+    box.disabled = false;
+    box.innerText = " ";
+    
+  }
+};
+
+const disabledbtn = () => {
+  for (let box of boxs) {
+    box.disabled = true;
+
+  }
+};
+
+function winmsg(win) {
+  document.getElementById("win").innerHTML="winner is " + win;
+  document.getElementById("win").style.color="red"
+  disabledbtn();
+  wmsg.style.color = "red";
+  
+  // wmsg.classList.remove("hide");
+}
 const wincondi = [
   [0, 1, 2],
   [0, 3, 6],
@@ -36,10 +63,18 @@ const checkwin = () => {
     let post3 = boxs[pattern[2]].innerText;
     if (post1 != "" && post2 != "" && post3 != "") {
       if (post1 === post2 && post2 === post3) {
-        document.getElementById("win").innerHTML = "winner is" + post1;
-        let st = document.getElementById("win");
-        st.style.color = "red";
+        winmsg(post1);
       }
     }
   }
 };
+
+// const resetgame=()=> {
+  
+// }
+resetbtn.addEventListener('click',  function resetgame(){
+  document.getElementById("win").innerHTML = "Chance of player X";
+  document.getElementById("win").style.color="black"
+  currentp = true;
+  enabledbtn();
+});
