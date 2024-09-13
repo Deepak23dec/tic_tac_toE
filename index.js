@@ -1,12 +1,13 @@
 let boxs = document.querySelectorAll(".box");
 let currentp = true;
-let wmsg = document.querySelector(".wmsg");
-let resetbtn=document.querySelector(".reset");
-
-
+let wmsg =    document.querySelector(".wmsg");
+let resetbtn = document.querySelector(".reset");
+let count = 0;
 
 boxs.forEach((boxs) => {
   boxs.addEventListener("click", function () {
+    count++;
+
     if (currentp) {
       boxs.innerHTML = "X";
       document.getElementById("win").innerHTML = "Chance of player O";
@@ -18,7 +19,10 @@ boxs.forEach((boxs) => {
       currentp = true;
     }
     boxs.disabled = true;
-    checkwin();
+
+    if (count > 4) {
+      checkwin();
+    }
   });
 });
 
@@ -26,23 +30,21 @@ const enabledbtn = () => {
   for (let box of boxs) {
     box.disabled = false;
     box.innerText = " ";
-    
   }
 };
 
 const disabledbtn = () => {
   for (let box of boxs) {
     box.disabled = true;
-
   }
 };
 
 function winmsg(win) {
-  document.getElementById("win").innerHTML="winner is " + win;
-  document.getElementById("win").style.color="red"
+  document.getElementById("win").innerHTML = "winner is " + win;
+  document.getElementById("win").style.color = "red";
   disabledbtn();
   wmsg.style.color = "red";
-  
+
   // wmsg.classList.remove("hide");
 }
 const wincondi = [
@@ -55,26 +57,34 @@ const wincondi = [
   [3, 4, 5],
   [6, 7, 8],
 ];
-const checkwin = () => {
+
+function checkwin() {
   for (let pattern of wincondi) {
     // console.log(pattern[0],pattern[1],pattern[2]);
     let post1 = boxs[pattern[0]].innerText;
     let post2 = boxs[pattern[1]].innerText;
     let post3 = boxs[pattern[2]].innerText;
-    if (post1 != "" && post2 != "" && post3 != "") {
+if (post1 != "" && post2 != "" && post3 != "") {
       if (post1 === post2 && post2 === post3) {
         winmsg(post1);
       }
     }
   }
-};
+  if (
+    count === 9 &&
+    !document.getElementById("win").innerHTML.includes("winner")
+  ) {
+    document.getElementById("win").innerHTML = "Game is Draw";
+    document.getElementById("win").style.color = "red";
+  }
+}
 
 // const resetgame=()=> {
-  
+
 // }
-resetbtn.addEventListener('click',  function resetgame(){
+resetbtn.addEventListener("click", function resetgame() {
   document.getElementById("win").innerHTML = "Chance of player X";
-  document.getElementById("win").style.color="black"
+  document.getElementById("win").style.color = "black";
   currentp = true;
   enabledbtn();
 });
